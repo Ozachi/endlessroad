@@ -1,0 +1,22 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "player-move3",
+    "texture": "6cedcec2-8da0-4c7b-b40f-39b79d4f72d8",
+    "atlas": "",
+    "rect": [
+      0,
+      3,
+      50,
+      72
+    ],
+    "offset": [
+      0,
+      -1.5
+    ],
+    "originalSize": [
+      50,
+      75
+    ]
+  }
+}
