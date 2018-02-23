@@ -1,24 +1,33 @@
 {
   "appKey": "",
   "appSecret": "",
+  "encryptJs": false,
   "excludeScenes": [],
   "includeAnySDK": false,
-  "includeSdk": [
-    "anysdk"
-  ],
+  "includeSDKBox": false,
   "inlineSpriteFrames": true,
+  "inlineSpriteFrames_native": true,
+  "jailbreakPlatform": false,
+  "md5Cache": false,
   "mergeStartScene": false,
   "oauthLoginServer": "",
+  "optimizeHotUpdate": false,
   "orientation": {
-    "landscapeLeft": true,
-    "landscapeRight": true,
-    "portrait": false,
-    "upsideDown": false
+    "landscapeLeft": false,
+    "landscapeRight": false,
+    "portrait": true,
+    "upsideDown": true
   },
-  "packageName": "org.cocos2d.6d-life",
+  "packageName": "org.cocos2d.endlessroad",
   "privateKey": "",
   "renderMode": "0",
-  "startScene": "e5e8433a-6492-4f84-83e0-93075737f4f2",
-  "title": "6d-life",
-  "webOrientation": "auto"
+  "startScene": "375ab43b-0a02-444d-90b0-5dcb934adeec",
+  "title": "endlessroad",
+  "webOrientation": "auto",
+  "wechatgame": {
+    "appid": "",
+    "orientation": "portrait"
+  },
+  "xxteaKey": "5c69896f-2318-4a",
+  "zipCompressJs": true
 }

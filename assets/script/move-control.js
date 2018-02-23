@@ -29,67 +29,93 @@ cc.Class({
 
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
+
+        this.onInventedKeyEvent();
+    },
+
+    onInventedKeyEvent:function(){
+        var self=this
+        cc.find("Canvas/LeftBottom/goleft").on(cc.Node.EventType.TOUCH_START, function (event) {
+            self._left = true;
+            self.node.scaleX = -1;
+            self.changeAnim();
+        });
+        cc.find("Canvas/LeftBottom/goleft").on(cc.Node.EventType.TOUCH_END, function (event) {
+            self._left = false;
+            self.changeAnim();
+        });
+        cc.find("Canvas/LeftBottom/goright").on(cc.Node.EventType.TOUCH_START, function (event) {
+            self._right = true;
+            self.node.scaleX = 1;
+            self.changeAnim();
+        });
+        cc.find("Canvas/LeftBottom/goright").on(cc.Node.EventType.TOUCH_END, function (event) {
+            self._right = false;
+            self.changeAnim();
+        });
+        cc.find("Canvas/RightBottom/gojump").on(cc.Node.EventType.TOUCH_START, function (event) {
+            self._up = true;
+            self._jumping = true;
+            self.changeAnim();
+        });
     },
 
     onCollisionEnter: function(other,self){
+        if(other.node.group == 'door'){
+            cc.director.loadScene("Game")
+        }
+        if(other.node.group=='wall'){
+            let blockArray = [];
+            let selfAabb = self.world.aabb;
+            let otherAabb = other.world.aabb;
+            let selfPreAabb = self.world.preAabb;
+            let otherPreAabb = other.world.preAabb;
 
-        if(other.node.group == 'btn' || other.node.group == 'toggle'|| other.node.group == 'gate' || other.node.group == 'danger'){
-            return;
-        }
+            if(selfPreAabb.xMax <= otherAabb.xMin && selfAabb.xMax >= otherAabb.xMin){
+                //right block
+                //console.log('right');
+                let worldPositionX = selfAabb.center.x - Math.abs(otherAabb.xMin - selfAabb.xMax);
+                this.node.x = this.node.parent.convertToNodeSpaceAR(cc.v2(worldPositionX,0)).x;
+                blockArray.push("_rightBlock");
+                this._rightBlock++;
+            }
+            if(selfPreAabb.xMin >= otherAabb.xMax && selfAabb.xMin <= otherAabb.xMax){
+                //left block
+                //console.log('left');
+                let worldPositionX = selfAabb.center.x  +  Math.abs(otherAabb.xMax - selfAabb.xMin);
+                this.node.x = this.node.parent.convertToNodeSpaceAR(cc.v2(worldPositionX,0)).x;
+                blockArray.push("_leftBlock");
+                this._leftBlock++;
+            }
+            if(selfPreAabb.yMax <= otherAabb.yMin && selfAabb.yMax >= otherAabb.yMin){
+                //up block
+                //console.log('up');
+                let worldPositionY = selfAabb.center.y - Math.abs(otherAabb.yMin - selfAabb.yMax);
+                this.node.y = this.node.parent.convertToNodeSpaceAR(cc.v2(0,worldPositionY)).y;
+                blockArray.push("_upBlock");
+                this._upBlock++;
+            }
+            if(selfPreAabb.yMin >= otherAabb.yMax && selfAabb.yMin <= otherAabb.yMax){
+                //down block
+                //console.log('down');
+                let worldPositionY = selfAabb.center.y + Math.abs(otherAabb.yMax - selfAabb.yMin);
+                this.node.y = this.node.parent.convertToNodeSpaceAR(cc.v2(0,worldPositionY)).y;
+                blockArray.push("_downBlock");
+                this._jumping = false;
+                this._downBlock++;
+            }
 
-        let blockArray = [];
-        let selfAabb = self.world.aabb;
-        let otherAabb = other.world.aabb;
-        let selfPreAabb = self.world.preAabb;
-        let otherPreAabb = other.world.preAabb;
-
-        if(selfPreAabb.xMax <= otherAabb.xMin && selfAabb.xMax >= otherAabb.xMin){
-            //right block
-            //console.log('right');
-            let worldPositionX = selfAabb.center.x - Math.abs(otherAabb.xMin - selfAabb.xMax);
-            this.node.x = this.node.parent.convertToNodeSpaceAR(cc.v2(worldPositionX,0)).x;
-            blockArray.push("_rightBlock");
-            this._rightBlock++;
+            if(other.blockArrays == undefined){
+                other.blockArrays = [];
+            }
+            other.blockArrays[this.node.name] = blockArray;
         }
-        if(selfPreAabb.xMin >= otherAabb.xMax && selfAabb.xMin <= otherAabb.xMax){
-            //left block
-            //console.log('left');
-            let worldPositionX = selfAabb.center.x  +  Math.abs(otherAabb.xMax - selfAabb.xMin);
-            this.node.x = this.node.parent.convertToNodeSpaceAR(cc.v2(worldPositionX,0)).x;
-            blockArray.push("_leftBlock");
-            this._leftBlock++;
-        }
-        if(selfPreAabb.yMax <= otherAabb.yMin && selfAabb.yMax >= otherAabb.yMin){
-            //up block
-            //console.log('up');
-            let worldPositionY = selfAabb.center.y - Math.abs(otherAabb.yMin - selfAabb.yMax);
-            this.node.y = this.node.parent.convertToNodeSpaceAR(cc.v2(0,worldPositionY)).y;
-            blockArray.push("_upBlock");
-            this._upBlock++;
-        }
-        if(selfPreAabb.yMin >= otherAabb.yMax && selfAabb.yMin <= otherAabb.yMax){
-            //down block
-            //console.log('down');
-            let worldPositionY = selfAabb.center.y + Math.abs(otherAabb.yMax - selfAabb.yMin);
-            this.node.y = this.node.parent.convertToNodeSpaceAR(cc.v2(0,worldPositionY)).y;
-            blockArray.push("_downBlock");
-            this._jumping = false;
-            this._downBlock++;
-        }
-
-        if(other.blockArrays == undefined){
-            other.blockArrays = [];
-        }
-        other.blockArrays[this.node.name] = blockArray;
         
     },
 
 
 
     onCollisionExit: function(other,self){
-        if(other.node.group == 'btn' || other.node.group == 'toggle'|| other.node.group == 'gate' || other.node.group == 'danger'){
-            return;
-        }
         if(other.blockArrays && other.blockArrays[this.node.name] != undefined){
             let blockArray = other.blockArrays[this.node.name]
             for(let item of blockArray){
@@ -102,7 +128,7 @@ cc.Class({
         switch(e.keyCode){//离奇bug 
             case cc.KEY.a: {this._left = true;this.node.scaleX = -1;break;}
             case cc.KEY.d: {this._right = true;this.node.scaleX = 1;break;}
-            case cc.KEY.j: {if(!this._jumping){this._up = true;this._jumping = true;}break;}
+            case cc.KEY.j: {this._up = true;this._jumping = true;break;}
         };
         this.changeAnim();
     },
@@ -115,8 +141,6 @@ cc.Class({
         }
         this.changeAnim();
     },
-    //忘记录了
-    //刚刚做了个帧动画
 
     changeAnim: function(){
         //check jump
@@ -162,8 +186,9 @@ cc.Class({
             this._jumping = true;
         }
         let currentSpeedY = this._speedY;
-        if(!!this._upBlock){
+        if(this._upBlock){
             currentSpeedY = Math.min(this._speedY,0);
+            this._speedY=0
         }
         this.node.y += currentSpeedY * dt;
     }

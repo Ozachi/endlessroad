@@ -1,0 +1,1 @@
+[{"__type__":"cc.AnimationClip","_name":"idle","_duration":0.016666666666666666,"curveData":{"comps":{"cc.Sprite":{"spriteFrame":[{"frame":0,"value":{"__uuid__":"d5MgXnJK5ETK69nQ99rnNN"}}]},"cc.BoxCollider":{}}}},{"__type__":"cc.SpriteFrame","content":{"name":"player-idle","texture":"f8fexnP5NBjq8KbrGfEHIU","rect":[0,3,50,72],"offset":[0,-1.5],"originalSize":[50,75]}}]

@@ -13,43 +13,9 @@
     "__type__": "cc.Node",
     "_name": "player",
     "_objFlags": 0,
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_cascadeOpacityEnabled": true,
     "_parent": null,
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 50,
-      "height": 75
-    },
     "_children": [],
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_scaleX": 1,
-    "_scaleY": 1,
-    "_position": {
-      "__type__": "cc.Vec2",
-      "x": 13,
-      "y": -136
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_localZOrder": 0,
-    "_globalZOrder": 0,
     "_tag": -1,
-    "_opacityModifyRGB": false,
-    "_id": "",
     "_active": true,
     "_components": [
       {
@@ -63,14 +29,45 @@
       },
       {
         "__id__": 5
-      },
-      {
-        "__id__": 6
       }
     ],
     "_prefab": {
-      "__id__": 7
+      "__id__": 6
     },
+    "_id": "",
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 40,
+      "height": 60
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 13,
+      "y": -136
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_opacityModifyRGB": false,
     "groupIndex": 0
   },
   {
@@ -85,7 +82,7 @@
       "__uuid__": "d53205e7-24ae-444c-aebd-9d0f7dae734d"
     },
     "_type": 0,
-    "_sizeMode": 2,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -139,22 +136,8 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 50,
-      "height": 75
-    }
-  },
-  {
-    "__type__": "e1b54ZTd5FP64Ylonk756aR",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_isSpaceRelease": true,
-    "_moveControl": null,
-    "shadowPlayerPrefab": {
-      "__uuid__": "ec093c4c-3c5f-4f85-9f3b-90269169c258"
+      "width": 40,
+      "height": 60
     }
   },
   {
@@ -175,9 +158,6 @@
       },
       {
         "__uuid__": "d2a7f363-da0b-41d0-ad54-15946b04c8c5"
-      },
-      {
-        "__uuid__": "1e5c1006-4ba5-415f-8656-ccd68ee763da"
       }
     ],
     "playOnLoad": false
@@ -188,7 +168,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "f434e0b6-bcaf-4060-b99b-cfb6a5f4a2b6"
     },
     "fileId": "425b6s2HHxDJKOTW+tf/i22",
     "sync": false

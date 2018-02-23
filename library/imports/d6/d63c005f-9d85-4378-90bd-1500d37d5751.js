@@ -35,64 +35,90 @@ cc.Class({
 
         var manager = cc.director.getCollisionManager();
         manager.enabled = true;
+
+        this.onInventedKeyEvent();
+    },
+
+    onInventedKeyEvent: function onInventedKeyEvent() {
+        var self = this;
+        cc.find("Canvas/LeftBottom/goleft").on(cc.Node.EventType.TOUCH_START, function (event) {
+            self._left = true;
+            self.node.scaleX = -1;
+            self.changeAnim();
+        });
+        cc.find("Canvas/LeftBottom/goleft").on(cc.Node.EventType.TOUCH_END, function (event) {
+            self._left = false;
+            self.changeAnim();
+        });
+        cc.find("Canvas/LeftBottom/goright").on(cc.Node.EventType.TOUCH_START, function (event) {
+            self._right = true;
+            self.node.scaleX = 1;
+            self.changeAnim();
+        });
+        cc.find("Canvas/LeftBottom/goright").on(cc.Node.EventType.TOUCH_END, function (event) {
+            self._right = false;
+            self.changeAnim();
+        });
+        cc.find("Canvas/RightBottom/gojump").on(cc.Node.EventType.TOUCH_START, function (event) {
+            self._up = true;
+            self._jumping = true;
+            self.changeAnim();
+        });
     },
 
     onCollisionEnter: function onCollisionEnter(other, self) {
+        if (other.node.group == 'door') {
+            cc.director.loadScene("Game");
+        }
+        if (other.node.group == 'wall') {
+            var blockArray = [];
+            var selfAabb = self.world.aabb;
+            var otherAabb = other.world.aabb;
+            var selfPreAabb = self.world.preAabb;
+            var otherPreAabb = other.world.preAabb;
 
-        if (other.node.group == 'btn' || other.node.group == 'toggle' || other.node.group == 'gate' || other.node.group == 'danger') {
-            return;
-        }
+            if (selfPreAabb.xMax <= otherAabb.xMin && selfAabb.xMax >= otherAabb.xMin) {
+                //right block
+                //console.log('right');
+                var worldPositionX = selfAabb.center.x - Math.abs(otherAabb.xMin - selfAabb.xMax);
+                this.node.x = this.node.parent.convertToNodeSpaceAR(cc.v2(worldPositionX, 0)).x;
+                blockArray.push("_rightBlock");
+                this._rightBlock++;
+            }
+            if (selfPreAabb.xMin >= otherAabb.xMax && selfAabb.xMin <= otherAabb.xMax) {
+                //left block
+                //console.log('left');
+                var _worldPositionX = selfAabb.center.x + Math.abs(otherAabb.xMax - selfAabb.xMin);
+                this.node.x = this.node.parent.convertToNodeSpaceAR(cc.v2(_worldPositionX, 0)).x;
+                blockArray.push("_leftBlock");
+                this._leftBlock++;
+            }
+            if (selfPreAabb.yMax <= otherAabb.yMin && selfAabb.yMax >= otherAabb.yMin) {
+                //up block
+                //console.log('up');
+                var worldPositionY = selfAabb.center.y - Math.abs(otherAabb.yMin - selfAabb.yMax);
+                this.node.y = this.node.parent.convertToNodeSpaceAR(cc.v2(0, worldPositionY)).y;
+                blockArray.push("_upBlock");
+                this._upBlock++;
+            }
+            if (selfPreAabb.yMin >= otherAabb.yMax && selfAabb.yMin <= otherAabb.yMax) {
+                //down block
+                //console.log('down');
+                var _worldPositionY = selfAabb.center.y + Math.abs(otherAabb.yMax - selfAabb.yMin);
+                this.node.y = this.node.parent.convertToNodeSpaceAR(cc.v2(0, _worldPositionY)).y;
+                blockArray.push("_downBlock");
+                this._jumping = false;
+                this._downBlock++;
+            }
 
-        var blockArray = [];
-        var selfAabb = self.world.aabb;
-        var otherAabb = other.world.aabb;
-        var selfPreAabb = self.world.preAabb;
-        var otherPreAabb = other.world.preAabb;
-
-        if (selfPreAabb.xMax <= otherAabb.xMin && selfAabb.xMax >= otherAabb.xMin) {
-            //right block
-            //console.log('right');
-            var worldPositionX = selfAabb.center.x - Math.abs(otherAabb.xMin - selfAabb.xMax);
-            this.node.x = this.node.parent.convertToNodeSpaceAR(cc.v2(worldPositionX, 0)).x;
-            blockArray.push("_rightBlock");
-            this._rightBlock++;
+            if (other.blockArrays == undefined) {
+                other.blockArrays = [];
+            }
+            other.blockArrays[this.node.name] = blockArray;
         }
-        if (selfPreAabb.xMin >= otherAabb.xMax && selfAabb.xMin <= otherAabb.xMax) {
-            //left block
-            //console.log('left');
-            var _worldPositionX = selfAabb.center.x + Math.abs(otherAabb.xMax - selfAabb.xMin);
-            this.node.x = this.node.parent.convertToNodeSpaceAR(cc.v2(_worldPositionX, 0)).x;
-            blockArray.push("_leftBlock");
-            this._leftBlock++;
-        }
-        if (selfPreAabb.yMax <= otherAabb.yMin && selfAabb.yMax >= otherAabb.yMin) {
-            //up block
-            //console.log('up');
-            var worldPositionY = selfAabb.center.y - Math.abs(otherAabb.yMin - selfAabb.yMax);
-            this.node.y = this.node.parent.convertToNodeSpaceAR(cc.v2(0, worldPositionY)).y;
-            blockArray.push("_upBlock");
-            this._upBlock++;
-        }
-        if (selfPreAabb.yMin >= otherAabb.yMax && selfAabb.yMin <= otherAabb.yMax) {
-            //down block
-            //console.log('down');
-            var _worldPositionY = selfAabb.center.y + Math.abs(otherAabb.yMax - selfAabb.yMin);
-            this.node.y = this.node.parent.convertToNodeSpaceAR(cc.v2(0, _worldPositionY)).y;
-            blockArray.push("_downBlock");
-            this._jumping = false;
-            this._downBlock++;
-        }
-
-        if (other.blockArrays == undefined) {
-            other.blockArrays = [];
-        }
-        other.blockArrays[this.node.name] = blockArray;
     },
 
     onCollisionExit: function onCollisionExit(other, self) {
-        if (other.node.group == 'btn' || other.node.group == 'toggle' || other.node.group == 'gate' || other.node.group == 'danger') {
-            return;
-        }
         if (other.blockArrays && other.blockArrays[this.node.name] != undefined) {
             var blockArray = other.blockArrays[this.node.name];
             var _iteratorNormalCompletion = true;
@@ -134,9 +160,7 @@ cc.Class({
                 }
             case cc.KEY.j:
                 {
-                    if (!this._jumping) {
-                        this._up = true;this._jumping = true;
-                    }break;
+                    this._up = true;this._jumping = true;break;
                 }
         };
         this.changeAnim();
@@ -156,8 +180,6 @@ cc.Class({
         }
         this.changeAnim();
     },
-    //忘记录了
-    //刚刚做了个帧动画
 
     changeAnim: function changeAnim() {
         //check jump
@@ -205,8 +227,9 @@ cc.Class({
             this._jumping = true;
         }
         var currentSpeedY = this._speedY;
-        if (!!this._upBlock) {
+        if (this._upBlock) {
             currentSpeedY = Math.min(this._speedY, 0);
+            this._speedY = 0;
         }
         this.node.y += currentSpeedY * dt;
     }

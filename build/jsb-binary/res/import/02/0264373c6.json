@@ -1,0 +1,1 @@
+[{"__type__":"cc.SpriteFrame","content":{"name":"player-jump","texture":"afFhJR16tGl4VmWsJZN0wO","rect":[0,3,50,72],"offset":[0,-1.5],"originalSize":[50,75]}},{"__type__":"cc.AnimationClip","_name":"jump","_duration":0.016666666666666666,"curveData":{"comps":{"cc.Sprite":{"spriteFrame":[{"frame":0,"value":{"__uuid__":"c6SaqZBTBLG62rjFEiqGz+"}}]},"cc.BoxCollider":{}}}}]

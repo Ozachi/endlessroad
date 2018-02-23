@@ -1,15 +1,19 @@
 {
-  "androidStudio": false,
-  "buildPath": "/Users/mai/mkx-panda/panda-run/build",
+  "androidStudio": true,
+  "apiLevel": "android-22",
+  "appABIs": [],
+  "buildPath": "build",
   "debug": false,
+  "includeEruda": false,
   "keystoreAlias": "",
   "keystoreAliasPassword": "",
   "keystorePassword": "",
   "keystorePath": "",
-  "platform": "web-desktop",
-  "previewHeight": 640,
-  "previewWidth": 960,
+  "platform": "android",
+  "previewHeight": "720",
+  "previewWidth": "1280",
   "sourceMaps": false,
-  "template": "default",
-  "useDebugKeystore": true
+  "template": "binary",
+  "useDebugKeystore": true,
+  "vsVersion": "auto"
 }
